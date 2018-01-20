@@ -1,0 +1,14 @@
+{
+  "name": "lightstep",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "start": "node bubblesort.js && node quicksort.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "lightstep-tracer": "^0.20.3",
+    "opentracing": "^0.14.1"
+  }
+}
