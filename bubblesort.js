@@ -10,19 +10,18 @@ opentracing.initGlobalTracer(tracer);
 
 function bubbleSort(arr) {
   let bubbleSortSpan = tracer.startSpan('bubblesort');
-  bubbleSortSpan.logEvent(`Unsorted dataset: ${arr}`);
+  bubbleSortSpan.log({event: `Invoking w/ Unsorted dataset`, payload: arr});
   for (let i = 0; i < arr.length; i += 1){
     for (let j = 1; j < arr.length; j += 1) {
       if (arr[j - 1].length > arr[j].length){
-        bubbleSortSpan.logEvent(`swap ${arr[j-1]} & ${arr[j]}`);
         swap(bubbleSortSpan, arr, j - 1, j);
-        bubbleSortSpan.logEvent(arr);
+        bubbleSortSpan.log({ event: `swapped ${arr[j-1]} & ${arr[j]}`, payload: arr});
       } else {
-        bubbleSortSpan.logEvent(`don't swap ${arr[j - 1]} & ${arr[j]}`)
+        bubbleSortSpan.log({ event: `don't swap ${arr[j - 1]} & ${arr[j]}`})
       }
     }
   }
-  bubbleSortSpan.logEvent(`Sorted dataset: ${arr}`);
+  bubbleSortSpan.log({ event: `Finished w/ Sorted dataset`, payload: arr });
   bubbleSortSpan.finish();
   return arr;
 }
@@ -30,11 +29,11 @@ function bubbleSort(arr) {
 function swap(parentSpan, array, i, j) {
   let swapSpan = opentracing.globalTracer().startSpan('swap', { childOf: parentSpan });
   let temp = array[i];
-  swapSpan.logEvent(`before: ${array}`);
-  swapSpan.logEvent(`swap: ${ array[i] } and ${ array[j] }`);
+  swapSpan.log({ event: `before swap`, payload: array});
+  swapSpan.log({ event: `swap: ${ array[i] } and ${ array[j] }`});
   array[i] = array[j];
   array[j] = temp;
-  swapSpan.logEvent(`after: ${array}`);
+  swapSpan.log({ event: `after swap`, payload: array});
   swapSpan.finish()
 }
 

@@ -27,7 +27,7 @@ function quickSort(array, parentSpan) {
         greater.push(e);
       }
     })
-    recurseSpan.logEvent(`less: ${less}, equal: ${equal}, greater: ${greater}`)
+    recurseSpan.log({event: 'sort', payload: `pivot: ${array[0]}, less: ${less}, equal: ${equal}, greater: ${greater}`});
     recurseSpan.finish();
     return quickSort(less, recurseSpan).concat(equal).concat(quickSort(greater, recurseSpan));
   } else {
@@ -38,9 +38,9 @@ function quickSort(array, parentSpan) {
 
 function main(dataset) {
   var mainSpan = tracer.startSpan('quicksort_initial_invocation');
-  mainSpan.logEvent(`Unsorted Dataset: ${dataset}`)
+  mainSpan.log({ event: `Invoking w/ Unsorted dataset`, payload: dataset });
   let sorted = quickSort(dataset, mainSpan);
-  mainSpan.logEvent(`Sorted Dataset: ${sorted}`);
+  mainSpan.log({ event: `Finished w/ Sorted dataset`, payload: sorted });
   mainSpan.finish();
 }
 
